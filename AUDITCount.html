@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assembly Sample Counter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        .totals {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Assembly Sample Counter</h1>
+    <div class="form-group">
+        <label for="assemblyName">Assembly Name:</label>
+        <input type="text" id="assemblyName" placeholder="Enter assembly name">
+    </div>
+    <div class="form-group">
+        <label for="acceptedSamples">Accepted Samples:</label>
+        <input type="number" id="acceptedSamples" placeholder="Enter number of accepted samples">
+    </div>
+    <div class="form-group">
+        <label for="rejectedSamples">Rejected Samples:</label>
+        <input type="number" id="rejectedSamples" placeholder="Enter number of rejected samples">
+    </div>
+    <button onclick="addEntry()">Add</button>
+    <table id="resultsTable">
+        <thead>
+            <tr>
+                <th>Assembly Name</th>
+                <th>Accepted Samples</th>
+                <th>Rejected Samples</th>
+                <th>Total Samples</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="totals">
+        <p>Total Accepted Samples: <span id="totalAccepted">0</span></p>
+        <p>Total Rejected Samples: <span id="totalRejected">0</span></p>
+        <p>Total Samples: <span id="totalSamples">0</span></p>
+    </div>
+
+    <script>
+        let totalAccepted = 0;
+        let totalRejected = 0;
+
+        function addEntry() {
+            const assemblyName = document.getElementById('assemblyName').value;
+            const acceptedSamples = parseInt(document.getElementById('acceptedSamples').value);
+            const rejectedSamples = parseInt(document.getElementById('rejectedSamples').value);
+
+            if (assemblyName && !isNaN(acceptedSamples) && !isNaN(rejectedSamples)) {
+                const totalSamples = acceptedSamples + rejectedSamples;
+                
+                // Add to table
+                const tbody = document.getElementById('resultsTable').querySelector('tbody');
+                const newRow = tbody.insertRow();
+                newRow.insertCell(0).textContent = assemblyName;
+                newRow.insertCell(1).textContent = acceptedSamples;
+                newRow.insertCell(2).textContent = rejectedSamples;
+                newRow.insertCell(3).textContent = totalSamples;
+
+                // Update totals
+                totalAccepted += acceptedSamples;
+                totalRejected += rejectedSamples;
+                document.getElementById('totalAccepted').textContent = totalAccepted;
+                document.getElementById('totalRejected').textContent = totalRejected;
+                document.getElementById('totalSamples').textContent = totalAccepted + totalRejected;
+
+                // Clear inputs
+                document.getElementById('assemblyName').value = '';
+                document.getElementById('acceptedSamples').value = '';
+                document.getElementById('rejectedSamples').value = '';
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+    </script>
+</body>
+</html>
